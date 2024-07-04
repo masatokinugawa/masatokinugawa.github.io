@@ -1,0 +1,14 @@
+<meta charset=utf-8>
+<style>
+div{
+  font-variant-ligatures: discretionary-ligatures;
+  font-size:100px;
+}
+div:before{content:"株"}
+.first-letter-test::first-letter{color:red}
+.first-letter-test-font-size::first-letter{color:red;font-size:200px}
+</style>
+<script>document.write(navigator.userAgent)</script>
+<div>式会社</div>
+<div class="first-letter-test">式会社</div>
+<div class="first-letter-test-font-size">式会社</div>

@@ -1,0 +1,13 @@
+<meta charset=utf-8>
+<style>
+div{
+  font-variant-ligatures: discretionary-ligatures;
+  font-size:100px;
+}
+.first-letter-test::first-letter{color:red}
+.first-letter-test-font-size::first-letter{color:red;font-size:200px}
+</style>
+<script>document.write(navigator.userAgent)</script>
+<div>株式会社</div>
+<div class="first-letter-test">株式会社</div>
+<div class="first-letter-test-font-size">株式会社</div>

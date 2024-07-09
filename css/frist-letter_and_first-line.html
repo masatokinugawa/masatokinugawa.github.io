@@ -1,0 +1,39 @@
+<body>
+  <script>
+    window.onload = function() {
+      //for first-line
+      const p1 = document.createElement('p');
+      p1.id = "PRIVATE1";
+      const shadow1 = p1.attachShadow({
+        mode: "closed"
+      });
+      shadow1.innerHTML = `<span style="font-family:Consolas!important;color:blue!important">A</span><span style="font-family:Consolas!important;color:blue!important">B</span>`;
+      document.body.appendChild(p1);
+
+      //for first-letter
+      const p2 = document.createElement('p');
+      p2.id = "PRIVATE2";
+      const shadow2 = p2.attachShadow({
+        mode: "closed"
+      });
+      shadow2.innerHTML = `<span style="font-family:Consolas!important;color:blue!important">A</span><span style="font-family:Consolas!important;color:blue!important">B</span>`;
+      document.body.appendChild(p2);
+
+    }
+  </script>
+
+  <style>
+    p {
+      font-size: 100px;
+    }
+
+    #PRIVATE1:first-line {
+      font-family: "Comic Sans MS"
+      color:red;
+    }
+
+    #PRIVATE2:first-letter {
+      font-family: "Comic Sans MS";
+      color: red;
+    }
+  </style>

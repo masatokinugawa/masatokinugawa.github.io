@@ -1,13 +1,15 @@
 <body>
   <script>
     window.onload = function() {
+      const html = `<span style="font-family:Consolas!important;color:blue!important">A</span><span style="font-family:Consolas!important;color:blue!important">B</span>`;
+      
       //for first-line
       const p1 = document.createElement('p');
       p1.id = "PRIVATE1";
       const shadow1 = p1.attachShadow({
         mode: "closed"
       });
-      shadow1.innerHTML = `<span style="font-family:Consolas!important;color:blue!important">A</span><span style="font-family:Consolas!important;color:blue!important">B</span>`;
+      shadow1.innerHTML = html;
       document.body.appendChild(p1);
 
       //for first-letter
@@ -16,7 +18,7 @@
       const shadow2 = p2.attachShadow({
         mode: "closed"
       });
-      shadow2.innerHTML = `<span style="font-family:Consolas!important;color:blue!important">A</span><span style="font-family:Consolas!important;color:blue!important">B</span>`;
+      shadow2.innerHTML = html;
       document.body.appendChild(p2);
 
     }

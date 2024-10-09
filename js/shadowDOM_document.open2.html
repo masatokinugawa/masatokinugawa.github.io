@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body>
+  <h1>World before executing document.open()</h1>
+  <script>
+    const div = document.createElement('div');
+    const shadow = div.attachShadow({
+      mode: "closed"
+    });
+    shadow.innerHTML = '<div style="border:dotted red 2px;padding:10px">Shadow DOM <button onclick="alert(/called!/)">Check if alert() is called via onclick attribute</button></div>';
+    document.body.appendChild(div);
+
+    function callDocOpenAndReappendShadow() {
+      document.open();
+      document.write('<body><h1>World after executing document.open()</h1>');
+      document.body.appendChild(div);
+    }
+  </script>
+  Light DOM <button onclick="callDocOpenAndReappendShadow()">Call document.open() and re-append the shadow above</button>
+    
+<!--
+Test for this behavior:
+https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#opening-the-input-stream:~:text=For%20each%20shadow%2Dincluding%20inclusive%20descendant%20node%20of%20document%2C%20erase%20all%20event%20listeners%20and%20handlers%20given%20node%2E
+ -->
+</body>
+</html>

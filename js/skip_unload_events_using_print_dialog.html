@@ -1,0 +1,40 @@
+<script>
+//console.log is often skippped, so use cookies for logging instead
+onpageswap=function(){
+  document.cookie="pageswap=emitted";
+}
+onpagehide=function(){
+  document.cookie="pagehide=emitted";
+}
+onunload=function(){
+  document.cookie="unload=emitted";
+}
+
+
+function justNavigation(){
+  location = "//example.com";
+}
+
+function callPrintAndNavigate(){
+  const iframe = document.createElement('iframe');
+  iframe.sandbox="allow-scripts allow-top-navigation";
+  iframe.srcdoc="<script>setTimeout(function(){top.location='//example.com';},1000)<\/script>";// Perform navigation via cross-origin page
+  document.body.appendChild(iframe);
+  print();
+}
+
+function checkIfEventsAreEmitted(){
+  alert(document.cookie);
+}
+
+function resetCookies(){
+  document.cookie = "pageswap=; max-age=0";
+  document.cookie = "pagehide=; max-age=0";
+  document.cookie = "unload=; max-age=0";
+}
+</script>
+<button onclick="justNavigation()">Just navigation</button>
+<button onclick="callPrintAndNavigate()">Call print and navigate</button>
+
+<button onclick="checkIfEventsAreEmitted()">Check if events are emitted</button>
+<button onclick=resetCookies()>Reset log cookies</button>

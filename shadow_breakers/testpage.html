@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shadow Breakers test page</title>
+</head>
+<body>
+  <h1>Shadow Breakers test page</h1>
+  <h2>Light DOM</h2>
+  <script>
+    const sHost = document.createElement('div');
+    sHost.id ="shost";
+    sHost.style ="border:dotted red 2px;padding:10px";
+    const sRoot = sHost.attachShadow({
+      mode: "closed"
+    });
+    sRoot.innerHTML = `<h2>Shadow DOM</h2>
+<div id="secret">This is a secret: deadbeef</div>
+<div contenteditable>contenteditable area</div>`;
+    document.body.appendChild(sHost);
+  </script>
+</body>
+</html>
